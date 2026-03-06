@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { BookOpen, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MitSloanLogo } from "@/components/MitSloanLogo";
+import { SyllabLogo } from "@/components/SyllabLogo";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const SignIn = () => {
             <BookOpen className="h-8 w-8 text-primary" />
           </div>
           <div className="flex items-center justify-center gap-2 mb-2">
-            <MitSloanLogo className="h-6" />
+            <SyllabLogo className="h-6 text-xl" />
           </div>
           <p className="text-sm text-muted-foreground">Sign in to your account</p>
         </div>

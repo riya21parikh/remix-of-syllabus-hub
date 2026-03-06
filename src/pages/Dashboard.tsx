@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { deadlines, courses, getCourse, typeLabels, officeHoursDeadlines } from "@/data/mockData";
 import { CalendarExportDialog } from "@/components/CalendarExportDialog";
 import { cn } from "@/lib/utils";
-import { MitSloanLogo } from "@/components/MitSloanLogo";
+import { SyllabLogo } from "@/components/SyllabLogo";
 
 type View = "list" | "calendar";
 type FilterType = "all" | string;
@@ -116,11 +116,11 @@ const Dashboard = ({ mode = "both" }: DashboardProps) => {
     <div className="min-h-screen bg-background">
       <div className="sticky top-0 z-30 border-b bg-card/95 backdrop-blur-md px-4 pt-4 pb-3">
         <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <MitSloanLogo className="h-6" />
-            <h1 className="text-lg font-bold text-foreground">
+          <div className="flex flex-col gap-0.5">
+            <SyllabLogo className="h-6 text-lg" />
+            <p className="text-xs text-muted-foreground">
               {format(new Date(), "EEEE, MMMM d")}
-            </h1>
+            </p>
           </div>
           <CalendarExportDialog />
         </div>

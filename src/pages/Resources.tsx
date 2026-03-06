@@ -1,8 +1,14 @@
 import { motion } from "framer-motion";
-import { ExternalLink, CalendarDays, Briefcase, Heart, BookOpen } from "lucide-react";
-import { MitSloanLogo } from "@/components/MitSloanLogo";
+import { ExternalLink, CalendarDays, Briefcase, Heart, BookOpen, Monitor } from "lucide-react";
+import { SyllabLogo } from "@/components/SyllabLogo";
 
 const links = [
+  {
+    title: "MIT Canvas",
+    description: "MIT's learning management system for courses, assignments, and grades.",
+    url: "https://canvas.mit.edu/",
+    icon: Monitor,
+  },
   {
     title: "Academic Calendar",
     description: "MIT Registrar's official academic calendar with key dates and deadlines.",
@@ -34,7 +40,7 @@ const Resources = () => {
     <div className="min-h-screen bg-background">
       <div className="sticky top-0 z-30 border-b bg-card/95 backdrop-blur-md px-4 pt-4 pb-3">
         <div className="flex items-center gap-2">
-          <MitSloanLogo className="h-6" />
+          <SyllabLogo className="h-6 text-lg" />
           <h1 className="text-lg font-bold text-foreground">Resources</h1>
         </div>
       </div>

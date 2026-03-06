@@ -1,14 +1,21 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { MitSloanLogo } from "@/components/MitSloanLogo";
-import { BookOpen, Bell, Calendar, GraduationCap, FlaskConical } from "lucide-react";
+import { SyllabLogo } from "@/components/SyllabLogo";
+import { BookOpen, Bell, Calendar, GraduationCap, FlaskConical, Moon } from "lucide-react";
 import profilePic from "@/assets/amy-wu-profile.jpg";
 
 const Profile = () => {
+  const { resolvedTheme, setTheme } = useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [notificationMethod, setNotificationMethod] = useState<"email" | "sms">("email");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [notificationTiming, setNotificationTiming] = useState("1-day");
   const [showAssignments, setShowAssignments] = useState(true);
   const [showExams, setShowExams] = useState(true);
@@ -19,7 +26,7 @@ const Profile = () => {
     <div className="min-h-screen bg-background">
       <div className="sticky top-0 z-30 border-b bg-card/95 backdrop-blur-md px-4 pt-4 pb-3">
         <div className="flex items-center gap-2">
-          <MitSloanLogo className="h-6" />
+          <SyllabLogo className="h-6 text-lg" />
           <h1 className="text-lg font-bold text-foreground">Profile</h1>
         </div>
       </div>
@@ -75,6 +82,30 @@ const Profile = () => {
           </div>
         </motion.div>
 
+        {/* Appearance / Dark Mode */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="rounded-xl border bg-card p-5 space-y-4"
+        >
+          <div className="flex items-center gap-2">
+            <Moon className="h-4 w-4 text-primary" />
+            <h3 className="text-sm font-semibold text-foreground">Appearance</h3>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-foreground">Dark Mode</p>
+              <p className="text-xs text-muted-foreground">Use a dark theme for the app</p>
+            </div>
+            <Switch
+              checked={resolvedTheme === "dark"}
+              onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+            />
+          </div>
+        </motion.div>
+
         {/* Notification Settings */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
@@ -96,21 +127,59 @@ const Profile = () => {
           </div>
 
           {notificationsEnabled && (
-            <div className="space-y-2">
-              <p className="text-xs font-medium text-foreground">Reminder Timing</p>
-              <Select value={notificationTiming} onValueChange={setNotificationTiming}>
-                <SelectTrigger className="h-9 text-sm">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1-hour">1 hour before</SelectItem>
-                  <SelectItem value="3-hours">3 hours before</SelectItem>
-                  <SelectItem value="1-day">1 day before</SelectItem>
-                  <SelectItem value="2-days">2 days before</SelectItem>
-                  <SelectItem value="1-week">1 week before</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <>
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-foreground">Notify me by</p>
+                <RadioGroup
+                  value={notificationMethod}
+                  onValueChange={(v) => setNotificationMethod(v as "email" | "sms")}
+                  className="flex flex-col gap-2"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="email" id="notify-email" />
+                    <Label htmlFor="notify-email" className="text-sm font-normal cursor-pointer">
+                      Email
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="sms" id="notify-sms" />
+                    <Label htmlFor="notify-sms" className="text-sm font-normal cursor-pointer">
+                      Text message
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </div>
+              {notificationMethod === "sms" && (
+                <div className="space-y-2">
+                  <Label htmlFor="phone-number" className="text-xs font-medium text-foreground">
+                    Phone number
+                  </Label>
+                  <Input
+                    id="phone-number"
+                    type="tel"
+                    placeholder="(555) 123-4567"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="h-9 text-sm"
+                  />
+                </div>
+              )}
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-foreground">Reminder Timing</p>
+                <Select value={notificationTiming} onValueChange={setNotificationTiming}>
+                  <SelectTrigger className="h-9 text-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1-hour">1 hour before</SelectItem>
+                    <SelectItem value="3-hours">3 hours before</SelectItem>
+                    <SelectItem value="1-day">1 day before</SelectItem>
+                    <SelectItem value="2-days">2 days before</SelectItem>
+                    <SelectItem value="1-week">1 week before</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </>
           )}
         </motion.div>
 

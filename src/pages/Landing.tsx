@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BookOpen, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MitSloanLogo } from "@/components/MitSloanLogo";
+import { SyllabLogo } from "@/components/SyllabLogo";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -20,19 +20,12 @@ const Landing = () => {
         </div>
 
         <div className="flex items-center justify-center gap-3">
-          <MitSloanLogo className="h-7" />
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            Simplify Your Syllabus
-          </h1>
+          <SyllabLogo className="h-6 text-2xl" />
         </div>
         <p className="mt-3 text-base text-muted-foreground leading-relaxed">
           Upload your syllabus, and this tool does the rest. All your deadlines,
           grades, and course info — organized in one place.
         </p>
-
-        <div className="mt-4 flex items-center justify-center gap-1.5 text-xs text-muted-foreground/70">
-          <span className="font-medium tracking-wider uppercase">Built for MIT Sloan</span>
-        </div>
 
         <Button
           size="lg"
