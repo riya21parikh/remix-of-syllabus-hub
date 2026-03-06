@@ -36,7 +36,7 @@ const Landing = () => {
 
         <Button
           size="lg"
-          onClick={() => navigate("/upload")}
+          onClick={() => navigate("/signin")}
           className="mt-10 w-full max-w-xs rounded-full text-base font-medium gap-2"
         >
           Get Started

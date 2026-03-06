@@ -181,4 +181,55 @@ export const typeLabels: Record<string, string> = {
   reading: "Reading",
   presentation: "Presentation",
   project: "Project",
+  "office-hours": "Office Hours",
 };
+
+export interface OfficeHours {
+  courseId: string;
+  courseNumber: string;
+  schedule: string;
+}
+
+export const officeHours: OfficeHours[] = [
+  { courseId: "pm", courseNumber: "15.785", schedule: "Tuesday 1:00–2:00 PM" },
+  { courseId: "analytics", courseNumber: "15.089", schedule: "Mon, Wed, Fri 1:00–2:00 PM" },
+  { courseId: "timeseries", courseNumber: "6.S899", schedule: "Friday 2:00–5:00 PM" },
+  { courseId: "strategy", courseNumber: "15.900", schedule: "Wednesday 2:00–3:00 PM, Thursday 4:00–6:00 PM" },
+];
+
+// Generate recurring office hours as deadline entries for calendar display
+function generateOfficeHoursDeadlines(): Deadline[] {
+  const ohDeadlines: Deadline[] = [];
+  const dayMap: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+
+  const ohData = [
+    { courseId: "pm", days: [2], label: "Office Hours" },
+    { courseId: "analytics", days: [1, 3, 5], label: "Office Hours" },
+    { courseId: "timeseries", days: [5], label: "Office Hours" },
+    { courseId: "strategy", days: [3, 4], label: "Office Hours" },
+  ];
+
+  // Generate for March-April 2026
+  ohData.forEach((oh) => {
+    const course = courses.find(c => c.id === oh.courseId);
+    oh.days.forEach((dayOfWeek) => {
+      for (let d = 1; d <= 61; d++) {
+        const date = new Date(2026, 2, d); // March 1 onwards
+        if (date.getDay() === dayOfWeek && date <= new Date(2026, 3, 30)) {
+          const dateStr = date.toISOString().split("T")[0];
+          ohDeadlines.push({
+            id: `oh-${oh.courseId}-${dateStr}-${dayOfWeek}`,
+            courseId: oh.courseId,
+            title: `${course?.number} ${oh.label}`,
+            dueDate: dateStr,
+            type: "assignment" as const,
+            description: "office-hours",
+          });
+        }
+      }
+    });
+  });
+  return ohDeadlines;
+}
+
+export const officeHoursDeadlines = generateOfficeHoursDeadlines();
