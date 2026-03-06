@@ -20,6 +20,32 @@ import { MitSloanLogo } from "@/components/MitSloanLogo";
 
 type View = "list" | "calendar";
 type FilterType = "all" | string;
+type CategoryFilter = "all" | "problem-sets" | "write-ups" | "projects" | "exams";
+
+const categoryFilters: { value: CategoryFilter; label: string }[] = [
+  { value: "all", label: "All Types" },
+  { value: "problem-sets", label: "Problem Sets" },
+  { value: "write-ups", label: "Write-ups" },
+  { value: "projects", label: "Projects" },
+  { value: "exams", label: "Exams" },
+];
+
+function matchesCategory(title: string, type: string, category: CategoryFilter): boolean {
+  if (category === "all") return true;
+  const t = title.toLowerCase();
+  switch (category) {
+    case "problem-sets":
+      return t.includes("problem set");
+    case "write-ups":
+      return t.includes("write-up") || t.includes("writeup") || t.includes("journey map") || t.includes("aok") || t.includes("competitive analysis") || t.includes("memo");
+    case "projects":
+      return type === "project" || type === "presentation" || t.includes("project") || t.includes("checkpoint") || t.includes("presentation");
+    case "exams":
+      return type === "exam" || t.includes("midterm") || t.includes("final exam");
+    default:
+      return true;
+  }
+}
 
 type DashboardMode = "both" | "calendar";
 
