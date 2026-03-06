@@ -20,6 +20,32 @@ import { MitSloanLogo } from "@/components/MitSloanLogo";
 
 type View = "list" | "calendar";
 type FilterType = "all" | string;
+type CategoryFilter = "all" | "problem-sets" | "write-ups" | "projects" | "exams";
+
+const categoryFilters: { value: CategoryFilter; label: string }[] = [
+  { value: "all", label: "All Types" },
+  { value: "problem-sets", label: "Problem Sets" },
+  { value: "write-ups", label: "Write-ups" },
+  { value: "projects", label: "Projects" },
+  { value: "exams", label: "Exams" },
+];
+
+function matchesCategory(title: string, type: string, category: CategoryFilter): boolean {
+  if (category === "all") return true;
+  const t = title.toLowerCase();
+  switch (category) {
+    case "problem-sets":
+      return t.includes("problem set");
+    case "write-ups":
+      return t.includes("write-up") || t.includes("writeup") || t.includes("journey map") || t.includes("aok") || t.includes("competitive analysis") || t.includes("memo");
+    case "projects":
+      return type === "project" || type === "presentation" || t.includes("project") || t.includes("checkpoint") || t.includes("presentation");
+    case "exams":
+      return type === "exam" || t.includes("midterm") || t.includes("final exam");
+    default:
+      return true;
+  }
+}
 
 type DashboardMode = "both" | "calendar";
 
@@ -58,14 +84,16 @@ const courseDotColors: Record<string, string> = {
 const Dashboard = ({ mode = "both" }: DashboardProps) => {
   const [view, setView] = useState<View>("calendar");
   const [courseFilter, setCourseFilter] = useState<FilterType>("all");
+  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 2, 1));
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const filtered = useMemo(() => {
     let items = [...deadlines].sort((a, b) => a.dueDate.localeCompare(b.dueDate));
     if (courseFilter !== "all") items = items.filter((d) => d.courseId === courseFilter);
+    if (categoryFilter !== "all") items = items.filter((d) => matchesCategory(d.title, d.type, categoryFilter));
     return items;
-  }, [courseFilter]);
+  }, [courseFilter, categoryFilter]);
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
@@ -136,6 +164,24 @@ const Dashboard = ({ mode = "both" }: DashboardProps) => {
               )}
             >
               {c.number}
+            </button>
+          ))}
+        </div>
+
+        {/* Category filter chips */}
+        <div className="mt-2 flex gap-2 overflow-x-auto hide-scrollbar pb-1">
+          {categoryFilters.map((cat) => (
+            <button
+              key={cat.value}
+              onClick={() => setCategoryFilter(cat.value)}
+              className={cn(
+                "shrink-0 rounded-full px-3 py-1 text-xs font-medium border transition-colors",
+                categoryFilter === cat.value
+                  ? "bg-foreground text-background border-foreground"
+                  : "bg-card text-muted-foreground border-border hover:text-foreground"
+              )}
+            >
+              {cat.label}
             </button>
           ))}
         </div>
