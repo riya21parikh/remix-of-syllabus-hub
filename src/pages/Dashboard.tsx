@@ -84,14 +84,16 @@ const courseDotColors: Record<string, string> = {
 const Dashboard = ({ mode = "both" }: DashboardProps) => {
   const [view, setView] = useState<View>("calendar");
   const [courseFilter, setCourseFilter] = useState<FilterType>("all");
+  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 2, 1));
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const filtered = useMemo(() => {
     let items = [...deadlines].sort((a, b) => a.dueDate.localeCompare(b.dueDate));
     if (courseFilter !== "all") items = items.filter((d) => d.courseId === courseFilter);
+    if (categoryFilter !== "all") items = items.filter((d) => matchesCategory(d.title, d.type, categoryFilter));
     return items;
-  }, [courseFilter]);
+  }, [courseFilter, categoryFilter]);
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
