@@ -14,13 +14,14 @@ import {
 } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { deadlines, courses, getCourse, typeLabels } from "@/data/mockData";
+import { deadlines, courses, getCourse, typeLabels, officeHoursDeadlines } from "@/data/mockData";
+import { CalendarExportDialog } from "@/components/CalendarExportDialog";
 import { cn } from "@/lib/utils";
 import { MitSloanLogo } from "@/components/MitSloanLogo";
 
 type View = "list" | "calendar";
 type FilterType = "all" | string;
-type CategoryFilter = "all" | "problem-sets" | "write-ups" | "projects" | "exams";
+type CategoryFilter = "all" | "problem-sets" | "write-ups" | "projects" | "exams" | "office-hours";
 
 const categoryFilters: { value: CategoryFilter; label: string }[] = [
   { value: "all", label: "All Types" },
@@ -28,9 +29,10 @@ const categoryFilters: { value: CategoryFilter; label: string }[] = [
   { value: "write-ups", label: "Write-ups" },
   { value: "projects", label: "Projects" },
   { value: "exams", label: "Exams" },
+  { value: "office-hours", label: "Office Hours" },
 ];
 
-function matchesCategory(title: string, type: string, category: CategoryFilter): boolean {
+function matchesCategory(title: string, type: string, category: CategoryFilter, description?: string): boolean {
   if (category === "all") return true;
   const t = title.toLowerCase();
   switch (category) {
@@ -42,6 +44,8 @@ function matchesCategory(title: string, type: string, category: CategoryFilter):
       return type === "project" || type === "presentation" || t.includes("project") || t.includes("checkpoint") || t.includes("presentation");
     case "exams":
       return type === "exam" || t.includes("midterm") || t.includes("final exam");
+    case "office-hours":
+      return description === "office-hours";
     default:
       return true;
   }
@@ -89,9 +93,9 @@ const Dashboard = ({ mode = "both" }: DashboardProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const filtered = useMemo(() => {
-    let items = [...deadlines].sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+    let items = [...deadlines, ...officeHoursDeadlines].sort((a, b) => a.dueDate.localeCompare(b.dueDate));
     if (courseFilter !== "all") items = items.filter((d) => d.courseId === courseFilter);
-    if (categoryFilter !== "all") items = items.filter((d) => matchesCategory(d.title, d.type, categoryFilter));
+    if (categoryFilter !== "all") items = items.filter((d) => matchesCategory(d.title, d.type, categoryFilter, d.description));
     return items;
   }, [courseFilter, categoryFilter]);
 
@@ -118,6 +122,7 @@ const Dashboard = ({ mode = "both" }: DashboardProps) => {
               {format(new Date(), "EEEE, MMMM d")}
             </h1>
           </div>
+          <CalendarExportDialog />
         </div>
 
         {mode === "both" && (
