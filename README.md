@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: [Lovable/Cursor App](https://sloan-syllabus-simplify.lovable.app)
+**URL**: [Lovable/Cursor App](https://syllabus-sync-26.lovable.app)
 
 ## How can I edit this code?
 
@@ -10,7 +10,8 @@ There are several ways of editing your application.
 
 **Use Lovable**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/6cd20ca4-b2e5-44af-82a8-c69f06c3708a and start prompting.
+Simply visit the [Lovable Project](https://lovable.dev/projects/a5f27772-2c50-46a2-b270-06b5851687d9) and start prompting.
+
 
 Changes made via Lovable will be committed automatically to this repo.
 
