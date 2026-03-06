@@ -167,6 +167,24 @@ const Dashboard = ({ mode = "both" }: DashboardProps) => {
             </button>
           ))}
         </div>
+
+        {/* Category filter chips */}
+        <div className="mt-2 flex gap-2 overflow-x-auto hide-scrollbar pb-1">
+          {categoryFilters.map((cat) => (
+            <button
+              key={cat.value}
+              onClick={() => setCategoryFilter(cat.value)}
+              className={cn(
+                "shrink-0 rounded-full px-3 py-1 text-xs font-medium border transition-colors",
+                categoryFilter === cat.value
+                  ? "bg-foreground text-background border-foreground"
+                  : "bg-card text-muted-foreground border-border hover:text-foreground"
+              )}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="mx-auto max-w-4xl px-4 py-4">
