@@ -1,12 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { LayoutList, CalendarDays, BookOpen, Upload } from "lucide-react";
+import { LayoutList, CalendarDays, BookOpen, Upload, LinkIcon, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const tabs = [
   { path: "/dashboard", label: "Home", icon: LayoutList },
   { path: "/calendar", label: "Calendar", icon: CalendarDays },
   { path: "/courses", label: "Courses", icon: BookOpen },
-  { path: "/upload", label: "Upload", icon: Upload },
+  { path: "/resources", label: "Resources", icon: LinkIcon },
+  { path: "/profile", label: "Profile", icon: User },
 ];
 
 export function BottomNav() {
@@ -23,14 +24,14 @@ export function BottomNav() {
               key={tab.path}
               onClick={() => navigate(tab.path)}
               className={cn(
-                "flex flex-col items-center gap-0.5 px-3 py-1.5 text-xs transition-colors",
+                "flex flex-col items-center gap-0.5 px-2 py-1.5 text-xs transition-colors",
                 isActive
                   ? "text-primary font-medium"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
               <tab.icon className={cn("h-5 w-5", isActive && "stroke-[2.5px]")} />
-              <span>{tab.label}</span>
+              <span className="text-[10px]">{tab.label}</span>
             </button>
           );
         })}
