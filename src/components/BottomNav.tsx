@@ -6,6 +6,7 @@ const tabs = [
   { path: "/dashboard", label: "Home", icon: LayoutList },
   { path: "/calendar", label: "Calendar", icon: CalendarDays },
   { path: "/courses", label: "Courses", icon: BookOpen },
+  { path: "/upload", label: "Upload", icon: Upload },
   { path: "/resources", label: "Resources", icon: LinkIcon },
   { path: "/profile", label: "Profile", icon: User },
 ];
